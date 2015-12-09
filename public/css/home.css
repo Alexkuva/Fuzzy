@@ -1,0 +1,49 @@
+body{
+  height: 100%;
+  margin: 0%;
+  padding: 0%;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+blockquote{
+	margin-bottom: 42px;
+}
+
+.labelBouton{
+	background-color: #E6E6E6;
+	margin-left:21.1%;
+	height: 26px;
+ 	border-width:1px;
+ 	border-color:grey;
+}
+
+button{
+	background-color: #E6E6E6;
+	margin-left:21.1%;
+	height: 30px;
+}
+
+.h1, h1{
+	height: 100%;
+	margin-left: 20.4%;
+}
+
+
+.container{
+	margin-bottom: 20px;
+}
+
+
+.col-xs-1{
+	width: 20%;
+}
+
+
+.form{
+	display:inline;
+}
+
+.valeur{
+	display: inline;
+	width: 60px;
+}

@@ -1,0 +1,227 @@
+doctype html
+html
+  head
+    title Line Chart
+    script(src='javascripts/Chart.js')
+  body
+    div(style='width:100%;text-align:center;padding-top:5%;')
+      section(style='width:100%;')
+        article(style='width:30%;clear:both;display: inline-block;vertical-align: middle;margin-right:15%;')
+          canvas#canvas(height='450', width='600')
+          div#legend(style="text-align:center;")
+        article(style='width:30%;clear:both;display: inline-block;vertical-align: middle;')
+          canvas#canvas2(height='450', width='600')
+          div#legend2(style="text-align:center;")
+      section(style='width:100%;padding-top:3%;')
+        article(style='width:80%;clear:both;display: inline-block;vertical-align: middle;')
+          div#messagesContainer(style='text-align:center;width: 100%; height: 200px;overflow-y:auto; border:dotted 1px black; white-space:nowrap;"')
+            
+    script.
+      var propTempInt = !{JSON.stringify(propTempInt)};
+      var propTempOut = !{JSON.stringify(propTempOut)};
+      
+      
+      
+      var lineChartData = {
+        labels:[],
+        datasets:[]
+      }
+      
+      for(i=0;i<propTempInt.length;i++){
+      //Labels
+        if(i==0){
+          lineChartData.labels.push(propTempInt[i].valeurs[0]+'°');
+          lineChartData.labels.push(propTempInt[i].valeurs[1]+'°');
+          lineChartData.labels.push(propTempInt[i].valeurs[2]+'°');
+        }
+        else{
+          if(i==(propTempInt.length-1)){
+            lineChartData.labels.push(propTempInt[i].valeurs[2]+'°');
+          }
+          else{
+            lineChartData.labels.push(propTempInt[i].valeurs[2]+'°');
+            lineChartData.labels.push(propTempInt[i].valeurs[3]+'°');
+          }
+        }
+        var r = Math.floor(Math.random() * 240);
+        var g = Math.floor(Math.random() * 240);
+        var b = Math.floor(Math.random() * 240);
+        color = "rgba("+r+","+g+","+b+","+1+")";
+      //Datasets
+        lineChartData.datasets.push(
+        {
+              label: propTempInt[i].nom,
+              fillColor : "rgba(0,0,0,0)",
+              strokeColor : ""+color+"",
+              pointColor : color,
+              pointStrokeColor : "#fff",
+              pointHighlightFill : "#fff",
+              pointHighlightStroke : "rgba(220,220,220,1)",
+              data : []
+        });
+        if(i==0){
+          lineChartData.datasets[i].data.push(100,100,0);
+        }
+        else{
+          for(j=0;j<(2*(i-1)+1);j++){
+            lineChartData.datasets[i].data.push("");
+          }
+          if(i==(propTempInt.length-1)){
+            lineChartData.datasets[i].data.push(0,100,100);
+          }
+          else{
+            lineChartData.datasets[i].data.push(0,100,100,0);
+          }
+        }
+      }
+      
+      
+      /*
+      var lineChartData = {
+        labels : [
+          propTempInt[0].valeurs[0]+'°',
+          propTempInt[0].valeurs[1]+'°',
+          propTempInt[0].valeurs[2]+'°',
+          propTempInt[1].valeurs[2]+'°',
+          propTempInt[1].valeurs[3]+'°',
+          propTempInt[2].valeurs[2]+'°',
+          propTempInt[2].valeurs[3]+'°',
+          propTempInt[3].valeurs[2]+'°',
+          propTempInt[3].valeurs[3]+'°',
+          propTempInt[4].valeurs[2]+'°'
+        ],
+        datasets : [
+          {
+            label: propTempInt[0].nom,
+            fillColor : "rgba(0,0,0,0)",
+            strokeColor : "rgba(21,0,128,1)",
+            pointColor : "rgba(21,0,88,1)",
+            pointStrokeColor : "#fff",
+            pointHighlightFill : "#fff",
+            pointHighlightStroke : "rgba(220,220,220,1)",
+            data : [100,100,0]
+          },
+          {
+            label: propTempInt[1].nom,
+            fillColor : "rgba(0,0,0,0)",
+            strokeColor : "rgba(108,166,205,1)",
+            pointColor : "rgba(126,192,238,1)",
+            pointStrokeColor : "#fff",
+            pointHighlightFill : "#fff",
+            pointHighlightStroke : "rgba(220,220,220,1)",
+            data : ["",0,100,100,0]
+          },
+          {
+            label: propTempInt[2].nom,
+            fillColor : "rgba(0,0,0,0)",
+            strokeColor : "rgba(190,238,0,1)",
+            pointColor : "rgba(205,255,0,1)",
+            pointStrokeColor : "#fff",
+            pointHighlightFill : "#fff",
+            pointHighlightStroke : "rgba(220,220,220,1)",
+            data : ["","","",0,100,100,0]
+          },
+          {
+            label: propTempInt[3].nom,
+            fillColor : "rgba(0,0,0,0)",
+            strokeColor : "rgba(255,137,0,1)",
+            pointColor : "rgba(255,88,0,1)",
+            pointStrokeColor : "#fff",
+            pointHighlightFill : "#fff",
+            pointHighlightStroke : "rgba(220,220,220,1)",
+            data : ["","","","","",0,100,100,0]
+          }
+          ,
+          {
+            label: propTempInt[4].nom,
+            fillColor : "rgba(0,0,0,0)",
+            strokeColor : "rgba(250,44,44,1)",
+            pointColor : "rgba(250,0,0,1)",
+            pointStrokeColor : "#fff",
+            pointHighlightFill : "#fff",
+            pointHighlightStroke : "rgba(220,220,220,1)",
+            data : ["","","","","","","",0,100,100]
+          }
+        ]
+      }
+      */
+      var lineChartData2 = {
+        labels:[],
+        datasets:[]
+      }
+      
+      for(i=0;i<propTempOut.length;i++){
+      //Labels
+        if(i==0){
+          lineChartData2.labels.push(propTempOut[i].valeurs[0]+'%');
+          lineChartData2.labels.push(propTempOut[i].valeurs[1]+'%');
+          lineChartData2.labels.push(propTempOut[i].valeurs[2]+'%');
+        }
+        else{
+          if(i==(propTempOut.length-1)){
+            lineChartData2.labels.push(propTempOut[i].valeurs[2]+'%');
+          }
+          else{
+            lineChartData2.labels.push(propTempOut[i].valeurs[2]+'%');
+            lineChartData2.labels.push(propTempOut[i].valeurs[3]+'%');
+          }
+        }
+        var r = Math.floor(Math.random() * 240);
+        var g = Math.floor(Math.random() * 240);
+        var b = Math.floor(Math.random() * 240);
+        color = "rgba("+r+","+g+","+b+","+1+")";
+      //Datasets
+        lineChartData2.datasets.push(
+        {
+              label: propTempOut[i].nom,
+              fillColor : "rgba(0,0,0,0)",
+              strokeColor : ""+color+"",
+              pointColor : color,
+              pointStrokeColor : "#fff",
+              pointHighlightFill : "#fff",
+              pointHighlightStroke : "rgba(220,220,220,1)",
+              data : []
+        });
+        if(i==0){
+          lineChartData2.datasets[i].data.push(100,100,0);
+        }
+        else{
+          for(j=0;j<(2*(i-1)+1);j++){
+            lineChartData2.datasets[i].data.push("");
+          }
+          if(i==(propTempOut.length-1)){
+            lineChartData2.datasets[i].data.push(0,100,100);
+          }
+          else{
+            lineChartData2.datasets[i].data.push(0,100,100,0);
+          }
+        }
+      }
+      
+     
+      window.onload = function(){
+      
+      var ctx = document.getElementById("canvas").getContext("2d");      
+      window.myLine = new Chart(ctx).Line(lineChartData, {
+      responsive: true,
+      scaleLineWidth: 1,
+      scaleFontSize: 12,
+      showTooltips: true,
+      scaleShowGridLines : false,
+      bezierCurve: false,
+      legendTemplate : "<% for (var i=0; i<datasets.length; i++){%><span style=\"-moz-border-radius:7px 7px 7px 7px; vertical-align:middle;border-radius:7px 7px 7px 7px;margin-right:10px;width:15px;height:15px;display:inline-block;background-color:<%=datasets[i].strokeColor %>\"></span><span style=\"vertical-align:middle;font-size:11px;margin-right:15px;\"><%if(datasets[i].label){%><%=datasets[i].label%><%}%></span><%}%>"
+      });
+      
+      var ctx2 = document.getElementById("canvas2").getContext("2d");
+      window.myLine2 = new Chart(ctx2).Line(lineChartData2, {
+      responsive: true,
+      scaleLineWidth: 1,
+      scaleFontSize: 12,
+      showTooltips: true,
+      scaleShowGridLines : false,
+      bezierCurve: false,
+      legendTemplate : "<% for (var i=0; i<datasets.length; i++){%><span style=\"-moz-border-radius:7px 7px 7px 7px; vertical-align:middle;border-radius:7px 7px 7px 7px;margin-right:10px;width:15px;height:15px;display:inline-block;background-color:<%=datasets[i].strokeColor %>\"></span><span style=\"vertical-align:middle;font-size:11px;margin-right:15px;\"><%if(datasets[i].label){%><%=datasets[i].label%><%}%></span><%}%>"
+      });
+      document.getElementById('legend').innerHTML = myLine.generateLegend();
+      document.getElementById('legend2').innerHTML = myLine2.generateLegend();
+      }
