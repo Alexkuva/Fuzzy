@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Application Logique Floue</title>
+    <title>Application Logique Floue | Bienvenue</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="http://canvasjs.com/assets/script/canvasjs.min.js"></script>
-    <script src="https://code.jquery.com/jquery-1.11.2.js"></script>
   <script type="text/javascript">
   window.onload = function () {
-  document.getElementsByName('input3')[0].style.display='none';
+    document.getElementsByName('inputMin')[0].style.display='block';
+    document.getElementsByName('inputMax')[0].style.display='none';
   }
   $(function() {
   $('.change').change(function() {
-    var val=document.forms["formulaire"].elements["selection"].value;
-    if (val=='1'){
-      console.log( "On a le 1" );
-      document.getElementsByName('input3')[0].style.display='none';
-      document.getElementsByName('input')[0].style.display='block';
-      document.getElementsByName('input1')[0].style.display='block';
-      document.getElementsByName('valMin')[0].required=false;
+    var val=document.forms["formulaire"].elements["type"].value;
+    if (val === '1'){
+      document.getElementsByName('inputMin')[0].style.display='block';
+      document.getElementsByName('inputMax')[0].style.display='none';
+      document.getElementsByName('valMin1')[0].required=true;
+      document.getElementsByName('valMax1')[0].required=false;
+    }else if (val === '2'){
+      document.getElementsByName('inputMin')[0].style.display='block';
+      document.getElementsByName('inputMax')[0].style.display='block';
       document.getElementsByName('valMin1')[0].required=true;
       document.getElementsByName('valMax1')[0].required=true;
-  }
-      else{console.log( "On a les autres" );
-      document.getElementsByName('input')[0].style.display='none';
-      document.getElementsByName('input1')[0].style.display='none';
-      document.getElementsByName('input3')[0].style.display='block';
-      document.getElementsByName('valMin')[0].required=true;
+    }
+    else {
+      document.getElementsByName('inputMin')[0].style.display='none';
+      document.getElementsByName('inputMax')[0].style.display='block';
       document.getElementsByName('valMin1')[0].required=false;
-      document.getElementsByName('valMax1')[0].required=false;
+      document.getElementsByName('valMax1')[0].required=true;
     }
   });
   });
@@ -49,94 +49,48 @@
         <blockquote>
         <p class="text-muted small">Exemple : <kbd>Température</kbd>, il fait <kbd>Chaud</kbd> <kbd>entre</kbd> <kbd>17</kbd> et <kbd>18</kbd>, <kbd>4</kbd> et <kbd>26</kbd> degrés.</p>
         </blockquote>
-        <form action="/propriete/create" method="post" name="formulaire" role="form">
+        <form action="/propriete/create" method="post" name="formulaire">
           <div class="form-group ">
-            <div class="col-xs-2">
-              <label for="ex2">Système</label>
+            <div class="col-md-2">
+              <label for="systeme">Système</label>
               </br>
-              <select class="form-control" name="systeme">
+              <select class="form-control" id="systeme" name="systeme">
                 <option>Température</option>
                 <option>Humidité</option>
               </select>
             </div>
-            <div class="col-xs-2">
+            <div class="col-md-2">
               <label for="ex1">Nom</label>
               <input class="form-control" name="nom" id="ex1" type="text" required>
             </div>
-            <div class="col-xs-2">
-              <label for="ex2">Opérateur</label>
+            <div class="col-md-3">
+              <label for="ex2">Type de valeur</label>
             </br>
-              <select class="form-control change" name="selection">
-                <option value="1">Entre</option>
-                <option value="2">En dessous de</option>
-                <option value="3">Au dessus de</option>
+              <select class="form-control change" name="type">
+                <option value="1">Valeur Mininum</option>
+                <option value="2">Valeur Intermédiaire</option>
+                <option value="3">Valeur Maximum</option>
               </select>
             </div>
-            <div name="input3"  class="col-xs-2">
-              <label  for="ex2">Valeur(s)</label></br>
-              <input class="form-control valeur" type="text" name="valMin"> et
-              <input class="form-control valeur" type="text" name="valMax">
-               <h6 class="text-primary">Entrez 1 ou 2 valeur(s) selon votre préférence.</h6>
-            </div>
-            <div name="input"  class="col-xs-2">
+           
+            <div name="inputMin"  class="col-md-2">
               <label  for="ex2">Valeur(s) minimum(s)</label></br>
               <input class="form-control valeur" type="text" name="valMin1" required> et
               <input class="form-control valeur" type="text" name="valMin2">
               <h6 class="text-primary">Entrez 1 ou 2 valeur(s) selon votre préférence.</h6>
             </div>
-            <div name="input1" class="col-xs-2">
+            <div name="inputMax" class="col-md-2">
               <label  for="ex2">Valeur(s) maximum(s)</label></br>
-              <input class="form-control valeur" type="text" name="valMax1" required> et
+              <input class="form-control valeur" type="text" name="valMax1" > et
               <input class="form-control valeur" type="text" name="valMax2">
                <h6 class="text-primary">Entrez 1 ou 2 valeur(s) selon votre préférence.</h6>
             </div>
           </div>
-          <input type="submit" id="submit-form" value="Submit" class="hidden" />
+          <input type="submit" id="submit-form" value="Valider" hidden />
         </form>
     </div>
-          <label for="submit-form" class="btn btn-xs labelBouton" >Valider</label>
-
-    <!--
-    <button  type="submit" class="btn btn-xs append">Ajout</button>
-
-    <script type="text/javascript">
-
-
-      $(document).ready(function() {
-         $('div.test:last').on('click',".append", function(){
-              if( $(this).val() != '' )
-              {
-                   $(this).parent().clone(true).insertAfter($(this).parent());
-              }
-         });
-      });
-
-      $(".append").click(function () {
-      console.log( "ready!" );
-      $( ".test" ).clone().appendTo(".box" );
-        $(function() {
-        $("input2").clone().prependTo("name.input2");
-        $('.box .change').change(function() {
-        var val=document.forms["formulaire"].elements["selection"].value;
-        if (val=='1'){
-            console.log( "On a le 1" );
-            document.getElementsByName('input3')[0].style.display='none';
-            document.getElementsByName('input')[0].style.display='block';
-            document.getElementsByName('input1')[0].style.display='block';}
-          else{
-            console.log( "On a les autres" );
-            document.getElementsByName('input')[0].style.display='none';
-            document.getElementsByName('input1')[0].style.display='none';
-            document.getElementsByName('input3')[0].style.display='block';
-          }
-        });
-      });
-      //$( ".test" ).clone().appendTo( ".box" );
-      //$('.box').append($('.test'));
-      });
-    </script>
-    !-->
-
+    <br>
+    <label for="submit-form" class="btn btn-block btn-primary" >Valider</label>
     <hr>
       <form action="/regle/create" method="post" role="form">
       <div class="container">
@@ -154,8 +108,8 @@
               </select>
             </div>
             <div class="col-xs-3">
-                <p>Si
-              <label for="ex2">Condition</label></p>
+               Si
+              <label for="ex2">Condition</label>
               <select class="form-control" name="condition">
                   <option>Chaud</option>
                   <option>Froid</option>
@@ -163,15 +117,16 @@
             </div>
 
             <div class="col-xs-3">
-              <p>Alors
-              <label for="ex2">Résultat</label></p>
+              Alors
+              <label for="ex2">Résultat</label>
               <input class="form-control" id="ex2" type="text" name="consequence" required>
             </div>
           </div>
         </div>
           <input type="submit" id="submit-form2" value="Submit" class="hidden" />
       </form>
-      <label for="submit-form2" class="btn btn-xs labelBouton" >Valider</label>
+      <br>
+      <label for="submit-form2" class="btn btn-block btn-primary" >Valider</label>
       <br><hr>
       <h3><a href="/liste">Voir les propriétés et les règles</a></h3>
       <h3><a href="/resultat">Voir le résultat</a></h3>

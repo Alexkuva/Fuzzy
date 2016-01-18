@@ -8,15 +8,9 @@ body{
 blockquote{
 	margin-bottom: 42px;
 }
-
-.labelBouton{
-	background-color: #E6E6E6;
-	margin-left:21.1%;
-	height: 26px;
- 	border-width:1px;
- 	border-color:grey;
+.btn-block{
+  width:20%;
 }
-
 button{
 	background-color: #E6E6E6;
 	margin-left:21.1%;

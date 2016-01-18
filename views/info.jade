@@ -1,9 +1,14 @@
 doctype html
 html
   head
-    title Line Chart
+    title Logique Floue | Résultat
+    link(rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css")
+    link(rel='stylesheet' href='../css/resultat.css')
+    script(src="/socket.io/socket.io.js")
     script(src='javascripts/Chart.js')
   body
+    h1
+      a(href='/') Logique Floue
     div(style='width:100%;text-align:center;padding-top:5%;')
       section(style='width:100%;')
         article(style='width:30%;clear:both;display: inline-block;vertical-align: middle;margin-right:15%;')
@@ -12,9 +17,16 @@ html
         article(style='width:30%;clear:both;display: inline-block;vertical-align: middle;')
           canvas#canvas2(height='450', width='600')
           div#legend2(style="text-align:center;")
-      section(style='width:100%;padding-top:3%;')
-        article(style='width:80%;clear:both;display: inline-block;vertical-align: middle;')
-          div#messagesContainer(style='text-align:center;width: 100%; height: 200px;overflow-y:auto; border:dotted 1px black; white-space:nowrap;"')
+      section(style='width:100%;padding:3% 10% 5% 10%;text-align:center;')
+          article(style='text-align:left;')
+            label(for="systeme") Systeme:
+            select#systeme
+              option Température
+              option Humidité
+            input(type="button" value="Envoyer !" class="btn-send" onclick="emitSignal();")
+          article(style='width:100%;clear:both;display: inline-block;vertical-align: middle;')
+            div#messagesContainer(style='text-align:center;width: 45%; height: 200px; margin-right:5%; clear:both; display:inline-block; vertical-align:middle; border:dotted 1px black; white-space:nowrap;overflow-y:auto;')
+            div#resultContainer(style='text-align:center;width: 45%; height:200px; margin-left:5%; clear:both; display:inline-block; vertical-align:middle; border:dotted 1px black; white-space:nowrap;overflow-y:auto;')
             
     script.
       var propTempInt = !{JSON.stringify(propTempInt)};
@@ -225,3 +237,17 @@ html
       document.getElementById('legend').innerHTML = myLine.generateLegend();
       document.getElementById('legend2').innerHTML = myLine2.generateLegend();
       }
+     
+    script.
+      var socket = io();
+      function emitSignal(){
+        socket.emit('heySignal', document.getElementById('systeme').value);
+      }
+
+      socket.on('signalGenerated', function(signal) {
+        document.getElementById('messagesContainer').innerHTML+='<strong>Système </strong>: '+signal.systeme +' <strong>Donnée envoyée</strong> : '+signal.value+' <strong>Heure</strong> : '+signal.timestamp+'</br>';
+      });
+      
+      socket.on('result', function(result) {
+        document.getElementById('resultContainer').append('Banana' + result);
+      });

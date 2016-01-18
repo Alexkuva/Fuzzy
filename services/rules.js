@@ -1,15 +1,11 @@
-var regleModel = require('../models/regles');
+var regleModel = require('../models/regle');
 var mongoose = require('mongoose');
-
-//Connexion
-var configDB = require('../config/database.js');
-mongoose.connect(configDB.url); // connect to our database
 
 exports.createRule = function createRule(systeme,condition,resultat) {
     var rules = new regleModel({
             systeme: systeme,
             condition: condition,
-            resultat:resultat,
+            consequence:resultat
         });
     rules.save(function (err) {
         if (err) {
@@ -17,6 +13,6 @@ exports.createRule = function createRule(systeme,condition,resultat) {
         }
         console.log('La règle a bien été prise en compte !');
     });
- });
+ }
 
 module.export

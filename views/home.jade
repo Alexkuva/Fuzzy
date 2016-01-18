@@ -1,0 +1,153 @@
+doctype html
+html(lang='en')
+  head
+    title Application Logique Floue | Bienvenue
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js')
+    script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
+    script(type='text/javascript', src='http://canvasjs.com/assets/script/canvasjs.min.js')
+    script(type='text/javascript').
+      window.onload = function () {
+      document.getElementsByName('inputMin')[0].style.display='block';
+      document.getElementsByName('inputMax')[0].style.display='none';
+      }
+      $(function() {
+        $('.change').change(function() {
+          var val=document.forms["formulaire"].elements["type"].value;
+          if (val === '1'){
+            document.getElementsByName('inputMin')[0].style.display='block';
+            document.getElementsByName('inputMax')[0].style.display='none';
+            document.getElementsByName('valMin1')[0].required=true;
+            document.getElementsByName('valMax1')[0].required=false;
+          }else if (val === '2'){
+            document.getElementsByName('inputMin')[0].style.display='block';
+            document.getElementsByName('inputMax')[0].style.display='block';
+            document.getElementsByName('valMin1')[0].required=true;
+            document.getElementsByName('valMax1')[0].required=true;
+          }
+          else {
+            document.getElementsByName('inputMin')[0].style.display='none';
+            document.getElementsByName('inputMax')[0].style.display='block';
+            document.getElementsByName('valMin1')[0].required=false;
+            document.getElementsByName('valMax1')[0].required=true;
+          }
+        });
+      });
+    script.
+      $(function() {
+        $(".rules").change(function(){
+          $('.rules option').each(function(){
+              if($('.'+ $(this).val()).is(':visible'))
+                $('.'+ $(this).val()).hide();
+              else
+                $('.'+ $(this).val()).show();
+          });
+        });
+      });
+    link(rel='stylesheet', href='./css/home.css')
+  body
+    h1
+      a(href='/') Logique Floue
+    .container
+      .container.test.box
+        h3 Entrez les propriétés et les règles selons vos préférences.
+        h2 Propriétés
+        blockquote
+          p.text-muted.small
+            | Exemple : 
+            kbd Température
+            | , il fait 
+            kbd Chaud
+            kbd entre
+            kbd 17
+            |  et 
+            kbd 18
+            | , 
+            kbd 4
+            |  et 
+            kbd 26
+            |  degrés.
+        form(action='/propriete/create', method='post', name='formulaire')
+          .form-group
+            .col-md-2
+              label(for='systeme') Système
+              br
+              select#systeme.form-control(name='systeme')
+                each val in sys
+                  option=val
+            .col-md-2
+              label(for='ex1') Nom
+              input#ex1.form-control(name='nom', type='text', required='')
+            .col-md-3
+              label(for='ex2') Type de valeur
+              br
+              select.form-control.change(name='type')
+                option(value='1') Valeur Mininum
+                option(value='2') Valeur Intermédiaire
+                option(value='3') Valeur Maximum
+            .col-md-2(name='inputMin')
+              label(for='ex2') Valeur(s) minimum(s)
+              br
+              input.form-control.valeur(type='text', name='valMin1', required='')
+              |  et
+              input.form-control.valeur(type='text', name='valMin2')
+              h6.text-primary Entrez 1 ou 2 valeur(s) selon votre préférence.
+            .col-md-2(name='inputMax')
+              label(for='ex2') Valeur(s) maximum(s)
+              br
+              input.form-control.valeur(type='text', name='valMax1')
+              |  et
+              input.form-control.valeur(type='text', name='valMax2')
+              h6.text-primary Entrez 1 ou 2 valeur(s) selon votre préférence.
+          input#submit-form(type='submit', value='Valider', hidden='')
+      br
+      label.btn.btn-block.btn-primary(for='submit-form') Valider
+      hr
+      form(action='/regle/create', method='post', role='form')
+        .container
+          h2 Règles
+          blockquote
+            p.text-muted.small
+              | Exemple : 
+              kbd Température
+              | , s'il fait 
+              kbd Chaud
+              | , alors 
+              kbd le chauffage s'éteint complètement
+              | .
+          .form-group
+            .col-xs-2
+              label(for='ex2') Système
+              br
+              select.form-control.rules(name='systeme')
+                each val in sys
+                  option=val
+            .col-xs-3
+              | Si 
+              label(for='ex2') Condition
+              each val, index in sys
+                if(index===0)
+                  select.form-control(name='condition1' id=index class=val)
+                    each value in prop
+                      if(value.systeme == val)
+                        option=value.nom
+                else
+                  select.form-control(name='condition2' id=index class=val style='display:none')
+                    each value in prop
+                      if(value.systeme == val)
+                        option=value.nom
+            .col-xs-3
+              | Alors 
+              label(for='ex2') Résultat
+              input#ex2.form-control(type='text', name='consequence', required='')
+        input#submit-form2.hidden(type='submit', value='Submit')
+      br
+      label.btn.btn-block.btn-primary(for='submit-form2') Valider
+      br
+      hr
+      h3
+        a(href='/liste') Voir les propriétés et les règles
+      h3
+        a(href='/resultat') Voir le résultat

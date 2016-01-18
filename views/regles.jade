@@ -1,0 +1,112 @@
+doctype html
+html(lang='en')
+  head
+    title Application Logique Floue
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
+    link(rel='stylesheet', href='https://cdn.datatables.net/1.10.10/css/dataTables.bootstrap.min.css')
+    script(src='https://code.jquery.com/jquery-1.11.3.min.js')
+    script(src='https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js')
+    script(src='https://cdn.datatables.net/1.10.10/js/dataTables.bootstrap.min.js')
+    script(type='text/javascript').
+      $(document).ready(function(){
+      $('#LeTable').dataTable({
+      "language": {
+      processing:     "Traitement en cours...",
+      search:         "Rechercher&nbsp;:",
+      lengthMenu:    "Afficher _MENU_ &eacute;l&eacute;ments",
+      info:           "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+      infoEmpty:      "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
+      infoFiltered:   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+      infoPostFix:    "",
+      loadingRecords: "Chargement en cours...",
+      zeroRecords:    "Aucun &eacute;l&eacute;ment &agrave; afficher",
+      emptyTable:     "Aucune donnée disponible dans le tableau",
+      paginate: {
+      first:      "Premier",
+      previous:   "Pr&eacute;c&eacute;dent",
+      next:       "Suivant",
+      last:       "Dernier"
+      },
+      aria: {
+      sortAscending:  ": activer pour trier la colonne par ordre croissant",
+      sortDescending: ": activer pour trier la colonne par ordre décroissant"
+      }
+      }
+      });
+      $('#LeTable2').dataTable({
+      "language": {
+      processing:     "Traitement en cours...",
+      search:         "Rechercher&nbsp;:",
+      lengthMenu:    "Afficher _MENU_ &eacute;l&eacute;ments",
+      info:           "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+      infoEmpty:      "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
+      infoFiltered:   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+      infoPostFix:    "",
+      loadingRecords: "Chargement en cours...",
+      zeroRecords:    "Aucun &eacute;l&eacute;ment &agrave; afficher",
+      emptyTable:     "Aucune donnée disponible dans le tableau",
+      paginate: {
+      first:      "Premier",
+      previous:   "Pr&eacute;c&eacute;dent",
+      next:       "Suivant",
+      last:       "Dernier"
+      },
+      aria: {
+      sortAscending:  ": activer pour trier la colonne par ordre croissant",
+      sortDescending: ": activer pour trier la colonne par ordre décroissant"
+      }
+      }
+      });
+      });
+    link(rel='stylesheet', href='./css/resultat.css')
+    
+    body
+      h1
+        a(href='/') Logique Floue
+      h2 Resumé de vos propriétés
+      table#LeTable.table.table-striped.table-bordered(cellspacing='0', width='100%')      
+        thead
+          tr
+            th Système
+            th Nom
+            th Valeurs
+            th Ordre
+            th Supprimer
+        tbody
+          - var min = true;
+          each val in prop
+            tr
+              td=val.systeme
+              td=val.nom
+              if(!val.valeurs[3])
+                if(min == true)
+                  td='De '+val.valeurs[0]+' à '+val.valeurs[1]+' ~ '+val.valeurs[2]
+                  - min = false;
+                else
+                  td='De '+val.valeurs[0]+' ~ '+val.valeurs[1]+' à '+val.valeurs[2]
+                  - min = true;
+              else 
+                td='De '+val.valeurs[0]+' ~ '+val.valeurs[1]+' à '+val.valeurs[2]+' ~ '+val.valeurs[3]
+              td=val.ordre
+              td(style='text-align:center;')
+                form(action='/regle/delete', method='post', role='form')
+                  button(name=val.id) Supprimer
+      h2 Resumé de vos règles
+      table#LeTable2.table.table-striped.table-bordered(cellspacing='0', width='100%')
+        thead
+          tr
+            th Système
+            th Condition
+            th Résultat
+            th Supprimer
+        tbody
+          each value in rule
+            tr
+              td=value.systeme
+              td=value.condition
+              td=value.consequence
+              td(style='text-align:center;')
+                form(action='/regle/delete', method='post', role='form')
+                  button(name='id' value=value.id) Supprimer
