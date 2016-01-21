@@ -10,7 +10,8 @@ var routes = require('./routes/index');
 var regles = require('./routes/regles');
 var proprietes = require('./routes/proprietes');
 
-var signalGen = require('./signal/signalGenerator.js')
+var signalGen = require('./signal/signalGenerator.js');
+var engine = require('./services/engine');
 var app = express();
 
 
@@ -43,9 +44,10 @@ io.on('connection', function(socket){
     var signal = signalGen.chooseSignal(systeme)();
     signal.systeme = systeme;
     socket.emit('signalGenerated', signal);
-    //fuzzifyRules(systeme, signal);
-    //calcul reponse
-   // socket.emit('result', reponse);
+    engine.fuzzifyRules(systeme, signal, function(result){
+      //console.log("r", result);
+      socket.emit('result', result);
+    });
   });
 });
 

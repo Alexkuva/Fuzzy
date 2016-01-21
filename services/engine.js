@@ -4,61 +4,38 @@ var ruleModel = require('../models/regle');
 var propModel = require('../models/propriete');
 
 //Adapter la logique floue à chaque règle
-function fuzzifyRules(systeme, signal){
+exports.fuzzifyRules = function fuzzifyRules(systeme, signal,callback){
     propModel.find({'systeme':systeme},function (err, props){
-      console.log(props);
-      
-     
-      foreach(prop in props){
-         fuzzylogic.trapezoid(valeur signal, prop, pri, é, té);
-        push tablo
-      }
-      
+        //console.log(props);
+        ruleModel.find({'systeme': systeme}, function(err, rules){
+          var fuzzyArray = [];
+          var resultArray = [];
+          rules.forEach(function(rule, indexR, rules){
+            console.log('rule', rule);
+             props.forEach(function(prop, indexP, props){
+                if(rule.condition === prop.nom){
+                 for (val in prop.valeurs){
+                     prop.valeurs[val] = parseInt(prop.valeurs[val]);
+                 }
+                 console.log("prop", prop, props.length);
+                 if(prop.ordre === 1){
+                     //console.log("Premiere prop", prop);
+                     fuzzyArray.push(fuzzylogic.reverseGrade(signal.value, prop.valeurs[0],prop.valeurs[1],prop.valeurs[2],prop.valeurs[3]));
+                 }else if(prop.ordre !== 1 && prop.ordre !== props.length){
+                     //console.log("milieu prop", prop);
+                     fuzzyArray.push(fuzzylogic.trapezoid(signal.value, prop.valeurs[0],prop.valeurs[1],prop.valeurs[2],prop.valeurs[3]));
+                 }else if(prop.ordre === props.length){
+                     //console.log("Dernière prop", prop);
+                     fuzzyArray.push(fuzzylogic.grade(signal.value, prop.valeurs[0],prop.valeurs[1],prop.valeurs[2]));
+                }
+                 //console.log("results Array", fuzzyArray);
+             }
+            });
+            var result = {prop: rule.condition, pourcent: fuzzyArray[indexR], action:rule.consequence};
+            resultArray.push(result);
+            console.log("results", result, resultArray);
+          });
+          callback(resultArray);
+        });
     });
-    // Récupérer toutes les règles et adapter trapèzes et 1 grade + 1 reversegrade.
-
-    if(regle.condition.ordre)
-        fuzzylogic.trapezoid
 }
-
-//Décision floue sur la valeur du signal
-function fuzzy(signal){
-  ruleModel.find({'systeme':systeme},function (err, rules){
-        console.log(rules);
-        
-        fuzzylogic.trapezoid(threat, 20, 30, 90, 100);
-      });
-
-
-  return result;
-}
-
-function getResult(){
-
-    //moyenne résultat renvoyé par le socket + nouveau résultat
-
-    //appeler cette fonction avec le socket
-
-    return result;
-}
-
-
-
-
-var threatCalc = function(threat) {
-    var probabNoAttack          = fuzzylogic.triangle(threat, 0, 20, 40);
-    var probabNormalAttack      = 
-    var OkAttack      = fuzzylogic.trapezoid(threat, 20, 50, 80, 100);
-    var probabEnragedAttack     = fuzzylogic.grade(threat, 90, 100);
-    console.log('Threat: ' + threat);
-    console.log('no attack: '       + probabNoAttack);
-    console.log('normal attack: '   + probabNormalAttack);
-    console.log('OK attack: '   + OkAttack);
-    console.log('enraged attack: '  + probabEnragedAttack);
-};
-
-threatCalc(10);
-threatCalc(20);
-threatCalc(30);
-threatCalc(50);
-threatCalc(60);
